@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>myjQuery</title>
+</head>
+<script>
+	function aa(seletor){
+		if (typeof seletor == "string") {
+			if (/^[a-z|1-6]{1,10}$/.test(seletor)) {
+				var obj = document.getElementsByTagName('div');
+				for (var i = 0; i < obj.length; i++) {
+					this[i] = obj[i]
+				}
+				this.length = obj.length;
+				return this;
+			}
+		}else if (typeof seletor == "function") {
+			window.onload=function(){
+				seletor();
+			}
+		}
+	}
+
+	aa.prototype={
+		each:function(callback){
+			for (var i = 0; i < this.length; i++) {
+				callback(i,this[i]);
+			}
+			return this;
+		},
+		css:function(attrobj){
+			this.each(function(i,obj){
+				for (var j in attrobj){
+					obj.style[j] = attrobj[j];
+				}
+			})
+			return this;
+		},
+		html:function(content){
+			this.each(function(i,obj){
+				if (content) {
+					obj.innerHTML = content;
+				}else{
+					return obj.innerHTML;
+				}
+			})
+			return this;
+		},
+		click:function(callback){
+			this.each(function(i,obj){
+				obj.onclick=function(){
+					callback.call(this)
+				}
+			})
+			return this;
+		},
+		eq:function(index){
+			return this[index];
+		}
+	}
+
+	function $(seletor){
+		return new aa(seletor);
+	}
+</script>
+<script>
+	$(function(){
+		console.log($("div").css({width:'200px',height:'200px',border:"1px solid red"}).html("aaaaaaaaaaaaaaaaaaaa").eq(2))
+	})
+
+
+
+</script>
+<body>
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+	<div>4</div>
+	<div>5</div>
+</body>
+</html>
